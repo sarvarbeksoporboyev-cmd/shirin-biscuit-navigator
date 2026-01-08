@@ -23,10 +23,18 @@ https://api.fleetbase.io
 ```
 
 #### 2. `FLEETBASE_KEY`
-Your Fleetbase secret API key (same as storefront app).
+**IMPORTANT**: This is the **Developers API Key** (NOT the Storefront key).
+
+**Where to find it:**
+- Go to Fleetbase Console → **Developers** tab → **API Keys**
+- Copy the **Secret Key** (starts with `$2y$10$...`)
+
+**Your key:**
 ```
 $2y$10$tBRZALDA294JWgmMBlh6Y.fVkLat0yIWn3d/AI/7VxQSkE5c3UNhS
 ```
+
+**Note:** Do NOT use the Storefront API key (`store_...`) for the Navigator app. That's only for the customer app.
 
 #### 3. `GOOGLE_MAPS_API_KEY`
 Google Maps API key with Maps SDK for Android enabled (same as storefront app).
@@ -97,6 +105,22 @@ This is different from the Storefront app which is for customers.
 
 ## Troubleshooting
 
+### "API credentials provided were not valid" error when logging in
+
+This means the `FLEETBASE_KEY` is incorrect or not set properly.
+
+**Solution:**
+1. Go to Fleetbase Console → **Developers** tab → **API Keys**
+2. Copy the **Secret Key** (NOT the Storefront key)
+3. Add it to GitHub secrets as `FLEETBASE_KEY`
+4. Rebuild the APK
+
+**Common mistakes:**
+- ❌ Using the Storefront API key (`store_...`) - This won't work for Navigator app
+- ❌ Using a test/sandbox key instead of production key
+- ❌ Key is disabled or expired in Fleetbase Console
+- ✅ Use the Developers → API Keys → Secret Key
+
 ### Build fails with "google-services.json not found"
 - Make sure you've added the `GOOGLE_SERVICES_JSON_NAVIGATOR` secret
 - Verify it's a different file than the storefront app
@@ -104,7 +128,7 @@ This is different from the Storefront app which is for customers.
 
 ### Build fails with "Invalid Fleetbase key"
 - Ensure `FLEETBASE_HOST` and `FLEETBASE_KEY` secrets are set
-- You can use the same keys as the storefront app
+- The key must be from **Developers → API Keys** (not Storefront)
 
 ### APK won't install on device
 - **Debug builds**: Enable "Install from unknown sources" on your Android device
