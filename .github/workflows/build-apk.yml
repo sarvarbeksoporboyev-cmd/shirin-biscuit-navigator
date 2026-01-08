@@ -42,16 +42,30 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo "APP_NAME=Shirin Biscuit Navigator" > .env
-          echo "APP_IDENTIFIER=com.shirinbiscuit.navigator" >> .env
-          echo "FLEETBASE_HOST=${{ secrets.FLEETBASE_HOST }}" >> .env
-          echo "FLEETBASE_KEY=${{ secrets.FLEETBASE_KEY }}" >> .env
-          echo "GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
-          echo "FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID || '0' }}" >> .env
-          echo "FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN || '0' }}" >> .env
-          echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID || '' }}" >> .env
-          echo "GOOGLE_IOS_CLIENT_ID=${{ secrets.GOOGLE_IOS_CLIENT_ID || '' }}" >> .env
-          echo "APP_LINK_PREFIX=shirinnavigator" >> .env
+          cat > .env << 'ENVEOF'
+          APP_NAME=Shirin Biscuit Navigator
+          APP_IDENTIFIER=com.shirinbiscuit.navigator
+          FLEETBASE_HOST=${{ secrets.FLEETBASE_HOST }}
+          FLEETBASE_KEY=${{ secrets.FLEETBASE_KEY }}
+          GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}
+          FACEBOOK_APP_ID=${{ secrets.FACEBOOK_APP_ID || '0' }}
+          FACEBOOK_CLIENT_TOKEN=${{ secrets.FACEBOOK_CLIENT_TOKEN || '0' }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID || '' }}
+          GOOGLE_IOS_CLIENT_ID=${{ secrets.GOOGLE_IOS_CLIENT_ID || '' }}
+          APP_LINK_PREFIX=shirinnavigator
+          ENVEOF
+          
+      - name: Verify .env file (debug)
+        run: |
+          echo "=== Checking .env file ==="
+          if [ -f .env ]; then
+            echo "✅ .env file exists"
+            echo "FLEETBASE_HOST is set: $(grep -q 'FLEETBASE_HOST=' .env && echo 'YES' || echo 'NO')"
+            echo "FLEETBASE_KEY is set: $(grep -q 'FLEETBASE_KEY=' .env && echo 'YES' || echo 'NO')"
+            echo "FLEETBASE_KEY length: $(grep 'FLEETBASE_KEY=' .env | cut -d'=' -f2 | wc -c) characters"
+          else
+            echo "❌ .env file not found"
+          fi
 
       - name: Create google-services.json
         env:
