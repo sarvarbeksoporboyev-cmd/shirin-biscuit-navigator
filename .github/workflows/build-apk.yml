@@ -102,6 +102,7 @@ jobs:
               <string name="FACEBOOK_APP_ID">0</string>
               <string name="FACEBOOK_CLIENT_TOKEN">0</string>
               <string name="GOOGLE_MAPS_API_KEY">placeholder</string>
+              <string name="TRANSISTORSOFT_LICENSE_KEY">placeholder</string>
           </resources>
           EOF
 
